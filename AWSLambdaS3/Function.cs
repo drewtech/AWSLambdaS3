@@ -1,12 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-
 using Amazon.Lambda.Core;
 using Amazon.Lambda.S3Events;
 using Amazon.S3;
-using Amazon.S3.Util;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
@@ -53,6 +49,7 @@ namespace AWSLambdaS3
 
             try
             {
+                context.Logger.LogLine($"New File {s3Event.Object.Key} arrived in {s3Event.Bucket.Name}!");
                 var response = await this.S3Client.GetObjectMetadataAsync(s3Event.Bucket.Name, s3Event.Object.Key);
                 return response.Headers.ContentType;
             }
